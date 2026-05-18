@@ -24,4 +24,4 @@ steps:
     appType: 'webAppLinux'
     appName: 'vhlr4'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    runtimeStack: 'DOTNETCORE|6.0'
+    runtimeStack: 'DOTNETCORE|10.0'
