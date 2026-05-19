@@ -1,25 +1,44 @@
-using Laba4.Models;
+﻿using Laba4.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Laba4.Models;
 
 namespace Laba4.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+        private readonly NoteContext _context;
+
+        // Був дублікат конструктора — залишаємо один
+        public HomeController(NoteContext context, ILogger<HomeController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        // Index був property замість методу — виправлено на [HttpGet]
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var notes = _context.Notes.ToList();
+            ViewBag.Notes = notes;
+            return View(notes);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult Index(string author, string text)
         {
-            return View();
-        }
+            // author і text тепер параметри методу, а не невідомі змінні
+            Note note = new Note
+            {
+                Author = author,
+                Text = text,
+                CreatedDate = DateTime.Now
+            };
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            _context.Notes.Add(note);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

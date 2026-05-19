@@ -2,7 +2,40 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Azure DevOps</h1>
-    <p>Azure DevOps provides developer services for allowing teams to plan work, collaborate on code development, and build and deploy applications. Azure DevOps supports a collaborative culture and set of processes that bring together developers, project managers, and contributors to develop software. It allows organizations to create and improve products at a faster pace than they can with traditional software development approaches.</a>.</p>
+<div class="mx-auto">
+    <h1>All Notes</h1>
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Index">
+        <div class="container">
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" name="Author" />
+            </div>
+            <div class="form-group">
+                <label for="author">Text</label>
+                <textarea class="form-control" id="text" name="Text" rows=3></textarea>
+            </div>
+            <button type="submit" class="btn btn-success mt-3 mb-3">Add</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Text</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in ViewBag.Notes)
+            {
+                <tr>
+                    <th scope="row">@note.Id</th>
+                    <td>@note.Text</td>
+                    <td>@note.CreatedDate</td>
+                    <td>@note.Author</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
